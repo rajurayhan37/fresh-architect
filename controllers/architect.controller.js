@@ -5,6 +5,7 @@ const jwt =  require('jsonwebtoken')
 
 //create main Model
 const Architect = db.architects
+const ArchitectReview = db.architect_reviews
 
 //main scope
 //add Customer
@@ -86,9 +87,23 @@ const userAuthenticattion = async (req, res)=>{
     
 }
 
+//get all architect with their reviews
+
+const getArchitectWithReview = async (req, res) => {
+    const data = await Architect.findAll({
+        include: [{
+            model: ArchitectReview,
+            as: 'review'
+        }],
+    })
+
+    res.status(200).send(data)
+}
+
 
 module.exports = {
     addArchitect,
     getAllArchitect,
-    userAuthenticattion
+    userAuthenticattion,
+    getArchitectWithReview
 }
