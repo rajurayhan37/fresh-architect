@@ -1,17 +1,21 @@
 <template>
-  <section class="pb-8" id="contact">
+  <section class="pb-8">
     <v-container fluid>
       <v-row justify="center">
         <v-col cols="10">
+          <v-row justify="space-around">
+            <v-col cols="12" class="text-left mt-8">
+              <h1 class="mt-15 mb-4 display-2">Contact Us</h1>        
+            </v-col>
+          </v-row>
           <v-row justify="center">
             <v-col cols="12" sm="5">
-              <h1 class="font-weight-light display-1"><b>Contact Us</b></h1>
-              <h3 class="font-weight-light mt-3">
+              <small class="font-weight-light mt-3">
                 We are E-Architecture , We always respect your dreams. <br/>
                 We will do our best to build your dream home with your hard earned money. <br/>
                 We care about quality not quantity 
-              </h3>
-              <h3 class="font-weight-light mt-3">
+              </small>
+              <h3 class="font-weight-light mt-10">
                 <b>Here is Our Contact Information : </b>
               </h3>
               <h3 class="font-weight-light mt-3">
@@ -27,6 +31,7 @@
                     v-model="name"
                     :rules="nameRules"
                     label="Name"
+                    variant="outlined"
                     required
                 ></v-text-field>
 
@@ -34,6 +39,7 @@
                     v-model="email"
                     :rules="emailRules"
                     label="E-mail"
+                    variant="outlined"
                     required
                 ></v-text-field>
 
@@ -41,6 +47,7 @@
                     v-model="textArea"
                     :rules="textAreaRules"
                     label="Message Us"
+                    variant="outlined"
                     required
                 />
 
@@ -49,6 +56,7 @@
                     color="primary"
                     :dark="valid"
                     rounded
+                    block
                     class="mt-3"
                     @click="submit"
                 >
@@ -60,10 +68,6 @@
         </v-col>
       </v-row>
     </v-container>  
-
-    <div class="svg-border-waves text-white">
-      <v-img src="~@/assets/img/borderWavesBlue.svg"></v-img>
-    </div>
 
       <v-snackbar
         v-model="snackbar.enabled"
@@ -86,9 +90,6 @@
           </v-btn>
         </template>
       </v-snackbar>
-
-      
-
     </section>
 </template>
     

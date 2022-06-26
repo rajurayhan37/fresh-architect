@@ -33,90 +33,88 @@
                         <h2>Create your Customer Account</h2>
                     </div>
 
-                    <v-form>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12" sm="12" md="12">
-                                    <v-form @submit="userRegister" method="get">
-                                        <v-text-field
-                                            v-model="user.name"
-                                            :rules="[rules.required]"
-                                            label="Full Name"
-                                            placeholder="Enter your full name!"
-                                            variant="outlined"
-                                            density="comfortable"
-                                            clearable
-                                        ></v-text-field>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" sm="12" md="12">
+                                <v-form
+                                    method="post"
+                                    @submit="userRegister"
+                                    ref="form"
+                                    v-model="valid"
+                                    lazy-validation
+                                >
+                                    <v-text-field
+                                        v-model="name"
+                                        :counter="30"
+                                        :rules="nameRules"
+                                        label="Full Name"
+                                        required
+                                        variant="outlined"
+                                        density="comfortable"
+                                        clearable
+                                    ></v-text-field>
 
-                                        <v-text-field
-                                            v-model="user.email"
-                                            :rules="[rules.required]"
-                                            label="Email"
-                                            placeholder="Enter an valid email!"
-                                            variant="outlined"
-                                            density="comfortable"
-                                            clearable
-                                        ></v-text-field>
-                                        
-                                        <v-text-field
-                                            v-model="user.dob"
-                                            :rules="[rules.required]"
-                                            label="Date of Birth"
-                                            placeholder="Enter your date of birth!"
-                                            variant="outlined"
-                                            density="comfortable"
-                                            hint="Year-Month-Day"
-                                            clearable
-                                        ></v-text-field>
+                                    <v-text-field
+                                        v-model="email"
+                                        :rules="emailRules"
+                                        label="Email"
+                                        required
+                                        variant="outlined"
+                                        density="comfortable"
+                                        clearable
+                                    ></v-text-field>
 
-                                        <v-text-field
-                                            v-model="user.password"
-                                            
-                                            :rules="[rules.required, rules.min]"
-                                            :type="showPassword ? 'text' : 'password'"
-                                            name="password"
-                                            label="Password"
-                                            placeholder="Enter your password!"
-                                            hint="At least 8 characters"
-                                            counter
-                                            variant="outlined"
-                                            density="comfortable"
-                                            clearable
-                                            @click:append="showPassword = !showPassword"
-                                        ></v-text-field>
+                                    <v-text-field
+                                        v-model="dob"
+                                        :rules="dobRules"
+                                        label="Date of Birth"
+                                        required
+                                        variant="outlined"
+                                        density="comfortable"
+                                        clearable
+                                        type="date"
+                                    ></v-text-field>
 
-                                        <v-text-field
-                                            v-model="user.confirm_password"
-                                            
-                                            :rules="[rules.required, rules.min]"
-                                            :type="showConfirmPassword ? 'text' : 'password'"
-                                            name="confirm_password"
-                                            label="Confirm Password"
-                                            placeholder="Enter your password!"
-                                            hint="At least 8 characters"
-                                            counter
-                                            variant="outlined"
-                                            density="comfortable"
-                                            clearable
-                                            @click:append="showConfirmPassword = !showConfirmPassword"
-                                        ></v-text-field>
-                                        
+                                    <v-text-field
+                                        type="password"
+                                        v-model="password"
+                                        :rules="passwordRules"
+                                        label="Password"
+                                        :counter="15"
+                                        required
+                                        variant="outlined"
+                                        density="comfortable"
+                                        placeholder="Password"
+                                        clearable
+                                    ></v-text-field>
+                                    <v-text-field
+                                        type="password"
+                                        v-model="confirm_password"
+                                        :rules="cnfpRules"
+                                        :counter="15"
+                                        label="Password"
+                                        required
+                                        variant="outlined"
+                                        density="comfortable"
+                                        placeholder="Confirm Password"
+                                        clearable
+                                    ></v-text-field>
+                                    <v-btn
+                                        :disabled="!valid"
+                                        color="success"
+                                        class="mr-4"
+                                        @click="validate"
+                                        block
+                                        type="submit"
+                                    >
+                                        Register
+                                    </v-btn>
+                                </v-form>
+                            </v-col>
 
-                                        <v-btn
-                                            block
-                                            color="primary"
-                                            size="large"
-                                            type="submit"
-                                        >
-                                        Register  
-                                        </v-btn>
-                                    </v-form>
-                                    
-                                </v-col>
+                        </v-row>
+                    </v-container>
 
-                            </v-row>
-                        </v-container>
-                    </v-form>
                 </v-card>
             </v-col>
         </v-main>
@@ -131,37 +129,54 @@ import axios from 'axios'
 
     data () {
       return {
-
-        user: {
-            name: '',
-            email: '',
-            dob: '',
-            password: '',
-            confirm_password: ''
-
-        },
-
         snackbar: false,
         message: null,
         color: 'success',
         
-        showPassword: false,
-        showConfirmPassword: false,
-        rules: {
-          required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters'
-        },
+        valid: true,
+        name: '',
+        nameRules: [
+            v => !!v || 'Name is required',
+            v => (v && v.length <= 30) || 'Name must be less than 30 characters',
+        ],
+        email: '',
+        emailRules: [
+            v => !!v || 'Email is required',
+            v => /.+@.+\..+/.test(v) || 'Email must be valid',
+        ],
+        dob: '',
+        dobRules: [
+            v => !!v || 'Email is required',
+        ],
+        password: '',
+        passwordRules: [
+            v => !!v || 'Name is required',
+            v => (v && v.length >= 8  && v.length <= 15) || 'Password must be less than 8 and more tha 15 characters',
+        ],
+        confirm_password: '',
+        cnfpRules: [
+            v => !!v || 'Name is required',
+            v => (v == this.password) || 'Password not matched!',
+            v => (v && v.length >= 8  && v.length <= 15) || 'Password must be less than 8 and more tha 15 characters',
+        ]
       }
     },
     methods: {
-
+        
         userRegister(e){
-            
-            axios.post('http://localhost:3000/api/architect/add', this.user)
+            const user = {
+                name: this.name,
+                email: this.email,
+                dob: this.dob,
+                password: this.password
+            }
+            axios.post('http://localhost:3000/api/customer/add', user)
             .then((res)=>{
                 this.message = res.data.message
                 this.snackbar = true
                 this.color = "success"
+                this.$router.push('/customer/login')
+
             })
             .catch((error)=>{
                 if (error.response) {

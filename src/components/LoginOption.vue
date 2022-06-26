@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-parallax max-height="100%" src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
+        <v-parallax max-height="100%" src="@/assets/img/bgHero.jpg">
             <v-main class="d-flex justify-center">
                 <v-container>
                     <v-row class="mt-5 align-center" >
@@ -118,6 +118,9 @@
         margin-top: 20px;
         width: 100%;
         background-color: transparent;
+    }
+    .v-row{
+        color: white;
     }
 </style>
 

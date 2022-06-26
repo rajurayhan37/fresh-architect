@@ -1,12 +1,23 @@
 <template>
     <v-app>
         <navigation :color="color" :flat="flat" />
-        <Home/>
-        <About/>
-        <AboutWork/>
-        <ArchitectList/>
-        <Download/>
-        <Contact/>
+        <section id="home">
+            <Home/>
+        </section>
+        <section id="about">
+            <About/>
+            <AboutWork/>
+        </section>
+        <section id="service">
+            <Services/>
+        </section>
+            <Download/>
+        <section id="architect">
+            <ArchitectList/>
+        </section>
+        <section id="contact">
+            <Contact/>
+        </section>
         <FooterSection/>
     </v-app>
 </template>
@@ -20,19 +31,20 @@
     import Download from "./LandingPage/DownloadSection";
     import Contact from "./LandingPage/ContactSection";
     import ArchitectList from './ArchitectList.vue'
+    import Services from './LandingPage/ServiceSection.vue'
 
     export default {
         name: 'UserDashboard',
         components: {
             navigation,
             Home,
-
             About,
             AboutWork,
             FooterSection,
             Download,
             Contact,
-            ArchitectList
+            ArchitectList,
+            Services
         },
 
         data() {

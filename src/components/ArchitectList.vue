@@ -1,11 +1,11 @@
 <template>
     <v-container>
-        <v-row>
-            <v-card>
-                <v-card-title>All Architects:</v-card-title>
+        <v-row justify="center my-5">
+            <v-card elevation="0">
+                <v-card-title class="text-center"><h2>Our Architects</h2></v-card-title>
             </v-card>
         </v-row>
-        <v-row>
+        <v-row class="my-10">
             <v-col lg="3" x-sm="12" sm="12" md="12" v-for="user in users" v-bind:key="user.id">
                 <v-hover
                     v-slot="{ isHovering, props }"
@@ -16,12 +16,13 @@
                     >
                         <v-card-header></v-card-header> 
                         <div class="d-flex">
-                            <v-avatar 
-                                class="mx-auto"
-                                color="info"
+                            <v-avatar
+                                color="blue"
                                 size="large"
+                                class="mx-auto"
                             >
-                                <span class="white--text text-h5">{{user.initials}}</span>
+                                <img v-if="user.image != null" :src="getPhoto(user.image)" alt="Profile" width="60">
+                                <span v-else class="white--text text-h6 font-weight-bold">{{ getInitials(user.name) }}</span>
                             </v-avatar>
                         </div>
 
@@ -37,17 +38,17 @@
                         <v-divider class="my-3"></v-divider>
 
                         <v-card-content class="d-flex justify-center align-center">
-                            <v-btn 
+                            <v-chip 
                                 rounded
                                 color="info"
                             >
-                                Message
-                            </v-btn>
+                                Total Review: <b>{{user.review.length}}</b> 
+                            </v-chip>
                         </v-card-content>
-
+                        <input :value="getAvgRating(user.review)" type="hidden"/>
                         <div class="text-center">
                             <v-rating 
-                                v-model="user.rating"
+                                v-model="rating"
                                 color="orange"
                                 size="small"
                                 readonly
@@ -67,15 +68,15 @@
 
 <script>
     import axios from 'axios'
+
     export default {
         name: 'ArchitectItem',
 
         data(){
             return {
+                rating: 5,
                 users: [
-                    { id: 1, name: "Raju", initials: "RN", rating: 4.5},
-                    { id: 2, name: "Rayhan Kobir", initials: "RK", rating: 4.5},
-                    { id: 3, name: "Raju Rayhan", initials: "RR", rating: 4.5},
+
                 ]
             }
         },
@@ -85,12 +86,52 @@
         },
 
         methods: {
+
+            getPhoto(photo){
+                return "uploads/architects/" + photo
+            },
+
+            getInitials(name){
+                const arr = name.split(' ')
+                const initials = arr[0][0] + arr[arr.length-1][0]
+                return initials
+            },
+
+            getAvgRating(review){
+                //const jsonData = JSON.stringify(review)
+                try{
+                    if(review.length > 0){
+                        let total = 0;
+                        for(var i=0; i<review.length; i++){
+                            console.log()
+                            total += review[i].rating
+                        }
+
+                        this.rating = total / review.length
+                    }else{
+                        this.rating =  0
+                    }
+                    
+                }catch(err){
+                    console.log(err)
+                }
+                
+            },
             loadData(){
-                axios.get("http://localhost:3000/api/architect/all")
+
+                axios.get('http://localhost:3000/api/architect/reviews')
                 .then((res)=>{
-                    console.log(res.data)
-                    this.users = res.data
+                    //console.log(res.data)
+                    this.users = res.data       
                 })
+                .catch((error)=>{
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    } else {
+                        console.log('Error', error.message);
+                    }
+                });
             }
         }
     }

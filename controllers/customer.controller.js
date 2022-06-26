@@ -24,7 +24,7 @@ const addCustomer = async (req, res) => {
     }
 
     const customer =  await Customer.create(info)
-    res.status(200).send(customer)
+    res.status(200).send({message: "Successfully created your account!"})
 }
 
 //get all customer

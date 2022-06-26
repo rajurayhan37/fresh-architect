@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-parallax max-height="100%" src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
+        <v-parallax max-height="100%" src="@/assets/img/bgHero.jpg">
             <v-main class="d-flex justify-center">
                 <v-container>
                     <v-row class="mt-5 align-center" >
@@ -116,6 +116,9 @@
 </template>
 
 <style>
+    .v-row{
+        color: white;
+    }
     .footer{
         position: flex;
         margin-top: 20px;

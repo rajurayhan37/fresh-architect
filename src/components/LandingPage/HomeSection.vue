@@ -1,10 +1,10 @@
 <template>
-    <v-parallax dark src="@/assets/img/bgHero.jpg" height="750">
+    <v-parallax dark src="@/assets/img/bgHero.jpg" >
       <v-row justify="center">
         <v-col cols="10">
           <v-row justify="center">
-            <v-col cols="12" class="mt-16">
-              <h1 class="mb-4">E-Architect</h1>
+            <v-col cols="12" class="mt-16 mb-4">
+              <h1 class="mb-4 mt-16">E-Architect</h1>
               <h1 class="font-weight-light">We are E-Architect<br />We know your Dream<br/></h1>
               <h2> Our Plan is always fulfill your Dream </h2>
               <v-btn
@@ -12,10 +12,9 @@
                 variant="outlined"
                 large
                 color="white"
-                @click="$vuetify.goTo('#contact')"
                 class="mt-5"
               >
-                Contact Us
+                <a href="#contact"> Contact Us</a>
                 <v-icon class="ml-2">mdi-arrow-down</v-icon>
               </v-btn>
             </v-col>
@@ -23,14 +22,12 @@
           </v-row>
         </v-col>
       </v-row>
-      
-      <div class="svg-border-waves text-white">
-        <v-img src="@/assets/img/borderWaves.svg" />
-      </div>
     </v-parallax>
 </template>
 
 <script>
+
+
 export default {
 
   data() {
@@ -44,13 +41,21 @@ export default {
 
 <style>
 
-.svg-border-waves .v-image {
+.svg-border-waves v-image {
   position: absolute;
   bottom: 0;
   left: 0;
   height: 3rem;
   width: 100%;
   overflow: hidden;
+}
+.mt-16{
+  color: whitesmoke;
+}
+
+a{
+  text-decoration: none;
+  color: white;
 }
 
 #hero {

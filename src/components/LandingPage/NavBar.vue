@@ -7,19 +7,6 @@
         :flat="flat"
         class="navigation"
     >
-        <v-list class="navigation-list">
-          <v-list-item
-            prepend-avatar="https://cdn.vuetifyjs.com/images/john.png"
-            title="John Leider"
-            subtitle="john@vuetifyjs.com"
-          >
-            <template v-slot:append>
-              <v-list-item-avatar end>
-                <v-btn size="small" variant="text" icon="mdi-menu-down"></v-btn>
-              </v-list-item-avatar>
-            </template>
-          </v-list-item>
-        </v-list>
 
         <v-divider></v-divider>
 
@@ -38,17 +25,48 @@
               <v-icon :icon="item.icon"></v-icon>
             </v-list-item-avatar>
 
-            <v-list-item-title v-text="item.text"></v-list-item-title>
+            <a :href="item.go"><v-list-item-title v-text="item.text"></v-list-item-title></a>
           </v-list-item>
          
         </v-list>
+
+        <v-btn 
+            v-if="auth == false"
+            class=" text-capitalize"
+            variant="text"
+            color="white"
+            size="large"
+            @click="loginHandeller"
+        >
+            Login
+        </v-btn>
+        <v-btn 
+            v-if="auth == false"
+            class="text-capitalize"
+            variant="text"
+            color="white"
+            size="large"
+            @click="registerBtnHandeller"
+        >
+            Register
+        </v-btn>
+        <v-btn 
+            v-if="auth == true"
+            class="float-right"
+            variant="text"
+            color="white"
+            size="large"
+            @click="dashboardBtnHandeller"
+        >
+            Dashboard
+        </v-btn>
     </v-navigation-drawer>
 
     <v-app-bar 
         app
         :flat="flat"
-        color="transparent"
-        elevation="0"
+        color="blue lighten2"
+        elevation="5"
         
     >
         <v-row class="d-flex justify-center">
@@ -69,9 +87,10 @@
             <v-col v-else lg="12">
                 <v-btn
                     color="white"
-                    @click="$vuetify.goTo('#about')"
-                >
-                    <h1>LOGO</h1>
+                    ref="button"
+                    
+                >   
+                    <a href="#home"><h1>LOGO</h1></a>
                 </v-btn>
 
                 <v-btn 
@@ -82,12 +101,12 @@
                     variant="text"
                     color="white"
                     size="large"
-                    @click="$vuetify.goTo(item.go)"
                 >
-                    {{item.text}}
+                    <a :href="item.go">{{item.text}}</a>
                 </v-btn>
 
                 <v-btn 
+                    v-if="auth == false"
                     class="float-right"
                     variant="text"
                     color="white"
@@ -97,6 +116,7 @@
                     Login
                 </v-btn>
                 <v-btn 
+                    v-if="auth == false"
                     class="float-right"
                     variant="text"
                     color="white"
@@ -104,6 +124,16 @@
                     @click="registerBtnHandeller"
                 >
                     Register
+                </v-btn>
+                <v-btn 
+                    v-if="auth == true"
+                    class="float-right"
+                    variant="text"
+                    color="white"
+                    size="large"
+                    @click="dashboardBtnHandeller"
+                >
+                    Dashboard
                 </v-btn>
             </v-col>
         </v-row> 
@@ -118,22 +148,30 @@
     }
     .navigation-list{
         background-color: transparent;
+        color: white;
     }
+    a{
+        text-decoration: none;
+        color: white;
+    }
+
 </style>
 
 <script>
+
     export default {
         data: () => ({
             drawer: null,
             isXs: false,
             bar: false,
+            auth: false,
 
             selectedItem: 0,
             items: [
-                { text: 'Home', icon: 'mdi-home-outline', go:"#home" },
-                { text: 'Services', icon: 'mdi-information-outline', go:"#service" },
-                { text: 'About Us', icon: 'mdi-download-box-outline', go:"#aboutus" },
-                { text: 'Contact us', icon: 'mdi-currency-usd', go:"#contactus"  },
+                { text: 'Home', icon: 'mdi-home-outline', go: '#home'},
+                { text: 'Services', icon: 'mdi-information-outline', go:'#service'},
+                { text: 'About Us', icon: 'mdi-download-box-outline', go: '#about'},
+                { text: 'Contact us', icon: 'mdi-currency-usd', go: '#contact'},
                 
             ],
         }),
@@ -151,20 +189,27 @@
             },
             registerBtnHandeller(){
                 this.$router.push('/register/option')
+            },
+            dashboardBtnHandeller(){
+                this.$router.push('/dashboard')
             }
         },
         watch: {
             isXs(value) {
-            if (!value) {
-                if (this.drawer) {
-                    this.drawer = false;
+                if (!value) {
+                    if (this.drawer) {
+                        this.drawer = false;
+                    }
                 }
-            }
             },
         },
         mounted() {
             this.onResize();
             window.addEventListener("resize", this.onResize, { passive: true });
+            const token = localStorage.getItem('token')
+            if(token != null){
+                this.auth = true
+            }
         },
     }
 </script>

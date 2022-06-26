@@ -7,6 +7,7 @@ const router =  require('express').Router()
 
 
 router.post('/add', middleware.emailExist, architectController.addArchitect)
+router.post('/upload/:id',architectController.upload.single('image'), architectController.uploadImage)
 router.get('/all', architectController.getAllArchitect)
 router.post('/login', architectController.userAuthenticattion)
 

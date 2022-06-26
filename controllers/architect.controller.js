@@ -1,6 +1,7 @@
 const db =  require('../models');
 const bcrypt = require("bcrypt");
 const jwt =  require('jsonwebtoken')
+const multer =  require('multer')
 
 
 //create main Model
@@ -35,9 +36,12 @@ const getAllArchitect =  async (req, res) => {
     let architect = await Architect.findAll({
         attributes: [
             'name',
-            'email'
+            'email',
+            'image'
         ]
     })
+
+    
 
     // let architect = await Architect.findAll()
 
@@ -101,9 +105,44 @@ const getArchitectWithReview = async (req, res) => {
 }
 
 
+//upload profile image
+
+//define storage for images
+const storage = multer.diskStorage({
+    //destination for file
+    destination: function(request, file, callback){
+        callback(null, './public/uploads/')
+    },
+
+    //define extentions
+    filename: function(request, file, callback){
+        callback(null, Date.now() + file.originalname )
+    }
+})
+
+//upload parameter for multer
+const upload = multer({
+    storage: storage,
+    limits: {
+        fieldSize: 1024*1024*10
+    }
+})
+
+const uploadImage = async (req, res) =>{
+    let id = req.params.id
+    let data = {
+        image: req.file.filename
+    }
+    const architect = await Architect.update( data, { where: { id: id}})
+
+    res.status(200).send(architect)
+}
+
 module.exports = {
     addArchitect,
     getAllArchitect,
     userAuthenticattion,
-    getArchitectWithReview
+    getArchitectWithReview,
+    uploadImage,
+    upload
 }

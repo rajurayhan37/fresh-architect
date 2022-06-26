@@ -4,12 +4,10 @@
         <v-col cols="10">
           <v-row justify="space-around">
             <v-col cols="12" class="text-center">
-              <h1 class="font-weight-light display-2">About Us</h1>
-              <h1 class="font-weight-light">
+              <h1 class="mt-15 mb-4 display-2">About Us</h1>
+              <small class="">
                 We always respect your dreams. We will do our best to build<br/> your dream home with your hard earned money. 
-              </h1>
-              
-              
+              </small>             
             </v-col>
             <v-col
               cols="12"
@@ -18,12 +16,14 @@
               v-for="(aboutus, i) in aboutuses"
               :key="i"
             >
-              <v-hover v-slot:default="{ hover }">
+              <v-hover
+                v-slot="{ isHovering, props }"
+              >
                 <v-card
                   class="card"
                   shaped
-                  :elevation="hover ? 10 : 4"
-                  :class="{ up: hover }"
+                  :elevation="isHovering ? 10 : 4"
+                  v-bind="props"
                 >
                   <v-img
                     :src="aboutus.img"
